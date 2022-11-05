@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkdesign_front"]=self["webpackChunkdesign_front"]||[]).push([[131],{7131:function(e,n,t){t.r(n),t.d(n,{default:function(){return o}});var r=function(){var e=this,n=e._self._c;return n("div",{staticClass:"normal-detector"},[e._v(" 常规检测 ")])},s=[],u={name:"NormalDetector"},c=u,l=t(1001),a=(0,l.Z)(c,r,s,!1,null,"ecd88728",null),o=a.exports}}]);
+//# sourceMappingURL=131.9e403534.js.map

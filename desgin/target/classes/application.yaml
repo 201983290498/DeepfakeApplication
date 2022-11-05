@@ -1,0 +1,9 @@
+logging:
+  level:
+    root: info
+    com.coder.design.controller: trace
+  pattern:
+    console: "%d{yyyy-MM-dd} ---- %-5level [%thread] %logger{10}:%msg%n"
+  file:
+    path: E:\\code\\github\\desgin\\mylog
+    name: E:\\code\\github\\desgin\\mylog\\design.log
