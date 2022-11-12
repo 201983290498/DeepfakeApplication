@@ -13,6 +13,8 @@ We will try to use some other format to tranform big files or try to use websoke
 ### date 22.11.12
 1. 编写了一个邮箱发送类(hjw)
 2. 实现了ajax上传大文件时的进度条制作
+
+
 **debug**:
 1. 如果上传的压缩包时一个含有图片的文件夹，而不直接是图片，导致解压失败（已修复）
 2. 上传超大文件，电脑死机
