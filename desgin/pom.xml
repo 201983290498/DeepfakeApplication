@@ -74,7 +74,22 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.76</version>
         </dependency>
+
+        <!-- 邮件发送 -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>22.0.0</version>
+        </dependency>
+        <!--        集成邮箱验证-->
     </dependencies>
+
+
 
     <dependencyManagement>
         <dependencies>
