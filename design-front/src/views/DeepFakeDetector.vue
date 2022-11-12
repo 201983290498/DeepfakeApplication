@@ -3,7 +3,7 @@
     <ServiceTitle :titleHeader="title"></ServiceTitle>
     <ServiceModule></ServiceModule>
     <ServiceDisplay :disImgs='disImgs' @uploadImage="uploadImage" ref="serviceDisplay"></ServiceDisplay>
-    <ServiceUpload @uploadImage='uploadImage' @changeDisBoard="changeDisBoard" @uploadZip="uploadZip" ref="serviceUpload"></ServiceUpload>
+    <ServiceUpload @uploadImage='uploadImage' @changeDisBoard="changeDisBoard" @uploadZip="uploadZip" ref="serviceUpload" :uploaded="uploaded" :downToZero="downToZero"></ServiceUpload>
   </div>
 </template>
 <!--components为啥要用大括号呢-->
@@ -27,7 +27,8 @@ export default {
     return {
       title: 'DeepFake篡改检测',
       deepfakeDetector: window.server.DEEPFAKE,
-      disImgs: [require('../../static/imgs/fake1.jpg'), require('../../static/imgs/fake2.jpg'), require('../../static/imgs/real1.jpg')]
+      disImgs: [require('../../static/imgs/fake1.jpg'), require('../../static/imgs/fake2.jpg'), require('../../static/imgs/real1.jpg')],
+      uploaded: 0
     }
   },
   methods: {
@@ -47,7 +48,6 @@ export default {
         data: JSON.stringify(imgs),
         success: function (response) {
           if (response.result) {
-            console.log(response)
             // 通过base64字符串加载图片
             imgs.base64 = _this.drawDetections(image, response.data.rects)
             // todo 待学习 父组件调用子组件的函数 https://www.cnblogs.com/effortandluck/p/16355992.html
@@ -101,18 +101,21 @@ export default {
           }
         },
         xhr: function () { // 显示加载进度
-          const xhr = new window.XMLHttpRequest()
+          const xhr = $.ajaxSettings.xhr()
           // todo 学习 使用XMLHttpRequest.upload监听上传过程，注册progress事件，打印回调函数中的event事件
-          xhr.upload.addEventListener('progress', function (event) {
-            // todo 待更新 需要查看更新的内容
-            if (event.lengthComputable) {
-              const percentComplete = event.loaded / event.total
-              _this.uploaded = parseInt(String(percentComplete * 100))
-            }
-          }, false)
+          if (xhr.upload) {
+            xhr.upload.addEventListener('progress', function (event) {
+              // 已经上传的进度条
+              _this.uploaded = Math.round(event.loaded / event.total * 100)
+              console.log(this.uploaded)
+            }, false)
+          }
           return xhr
         }
       })
+    },
+    downToZero: function () {
+      this.uploaded = 0
     }
   }
 }

@@ -8,6 +8,7 @@
       <div class="inb input-btn" @click="openWindow">
         <span style="display: inline-block;">本地上传</span>
       </div>
+      <span class="upload-info">仅支持图片类型('png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp')或压缩文件(.zip)</span>
     </div>
 <!--上传按钮2-->
     <div class="inb upload-btn">
@@ -15,7 +16,12 @@
         <span>检测</span>
       </div>
     </div>
-    <span class="upload-info">仅支持图片类型('png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp')或压缩文件(.zip)</span>
+<!--  进度条 -->
+    <div class="progress" v-if="uploadZip">
+      <div class="progress-bar progress-bar-success progress-bar-striped  active" role="progressbar" :aria-valuenow="uploaded" aria-valuemin="0" aria-valuemax="100" :style="{'width': String(uploaded) + '%','min-width': '5em'}">
+        {{'上传进度' + String(uploaded) + '%'}}
+      </div>
+    </div>
     <input type="file" id="importFile" v-show="false">
   </div>
 </template>
@@ -32,7 +38,17 @@ export default {
         size: 0,
         base64: ''
       },
-      uploaded: 0
+      uploadZip: false
+    }
+  },
+  props: {
+    uploaded: {
+      type: Number,
+      require: true,
+      default: 0
+    },
+    downToZero: {
+      type: Function
     }
   },
   methods: {
@@ -65,6 +81,8 @@ export default {
         _this.uploadImages.base64 = event.target.result
         if (_this.check_suffix(file.name) === 1) { // 显示图片
           _this.$emit('changeDisBoard', _this.uploadImages)
+        } else {
+          _this.downToZero()
         }
         if (isFinal) {
           // todo js字符串格式化输出 https://blog.csdn.net/abraham_ly/article/details/111150401?ops_request_misc=&request_id=&biz_id=102&utm_term=js%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-111150401.nonecase&spm=1018.2226.3001.4187
@@ -88,6 +106,7 @@ export default {
           if (_this.check_suffix(_this.uploadImages.name) === 1) {
             _this.$emit('uploadImage', _this.uploadImages)
           } else {
+            _this.uploadZip = true
             _this.$emit('uploadZip', _this.uploadImages)
           }
         }).catch(() => {
@@ -105,6 +124,10 @@ export default {
       if (files.length > 1) {
         _this.$message.warning('仅支持单张图片处理, 多张图片请压缩成zip文件。')
       } else {
+        // 对进度条的处理
+        if (_this.check_suffix(files[0].name) !== 2) {
+          _this.uploadZip = false
+        }
         if (_this.check_suffix(files[0].name) !== 0) {
           // todo 文件需要先加载，加载完成之后才能触发事件，这是一个异步函数 https://blog.csdn.net/lyx32609/article/details/112601241
           _this.getBase64(files[0], true)
@@ -172,7 +195,7 @@ export default {
 }
 .upload-btn{
    width: 18%;
-  margin-top: -20px;
+  vertical-align: top;
 }
 .detect-btn{
   width: 130px;
@@ -195,7 +218,11 @@ export default {
   color: #B9BBC3;
   font-size: 14px;
   display: block;
-  margin-left: 40px;
+  margin-left: 15px;
 }
-
+.progress{
+  width: 95%;
+  margin: 5px auto 50px;
+  height: 17px;
+}
 </style>
