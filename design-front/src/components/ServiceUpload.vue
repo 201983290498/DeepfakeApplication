@@ -36,7 +36,8 @@ export default {
         name: '',
         type: '',
         size: 0,
-        base64: ''
+        base64: '',
+        detectType: ''
       },
       uploadZip: false
     }
@@ -49,7 +50,8 @@ export default {
     },
     downToZero: {
       type: Function
-    }
+    },
+    detectType: [String]
   },
   methods: {
     // todo 不能随便使用匿名函数的形式，因为可能会无法访问vue变量，因此
@@ -76,6 +78,7 @@ export default {
       _this.uploadImages.name = file.name
       _this.uploadImages.size = file.size
       _this.uploadImages.type = file.type
+      _this.uploadImages.detectType = this.detectType
       fileReader.readAsDataURL(file)
       fileReader.onload = function (event) { // 图片加载完成之后需要提示,并更新主框的视图
         _this.uploadImages.base64 = event.target.result
