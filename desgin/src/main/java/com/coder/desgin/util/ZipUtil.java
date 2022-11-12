@@ -64,27 +64,34 @@ public class ZipUtil {
             dir.mkdir();
         }
 
-        // 将base64去掉文件头
-        base64 = base64.substring(base64.indexOf(',')+1);
         try{
-            // todo 这个类有啥用
+            // 先将文件写出来在解压
+
+            // 将base64去掉文件头
+            base64 = base64.substring(base64.indexOf(',')+1);
             byte[] bytes = Base64.getDecoder().decode(base64);
             ByteArrayInputStream byteArray = new ByteArrayInputStream(bytes);
             ZipInputStream zipInput = new ZipInputStream(byteArray);
             ZipEntry entry = zipInput.getNextEntry();
             File fout = null;
-            while(entry != null && !entry.isDirectory()){
-                // todo 这边需要断点，查看这边函数的具体意义
-                log.info("文件名称： [{}]", entry.getName());
-                fout = new File(dir, entry.getName());
-                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fout));
-                int offo = -1;
-                byte[] buffer = new byte[BUFFER_SIZE];
-                while((offo=zipInput.read(buffer)) != -1){
-                    bos.write(buffer, 0, offo);
+            while(entry != null ){
+                if (!entry.isDirectory()){
+                    // todo 这边需要断点，查看这边函数的具体意义, Zip可以发现文件夹下的文件，一般用户可能直接对文件夹压缩，导致解压第一个文件不是图片，所以需要将文件夹的前缀删除
+                    log.info("文件名称： [{}]", entry.getName());
+                    String fileName = entry.getName();
+                    if (fileName.lastIndexOf("/")!=-1){
+                        fileName = fileName.substring(fileName.lastIndexOf("/")+1);
+                    }
+                    fout = new File(dir, fileName);
+                    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fout));
+                    int offo = -1;
+                    byte[] buffer = new byte[BUFFER_SIZE];
+                    while((offo=zipInput.read(buffer)) != -1){
+                        bos.write(buffer, 0, offo);
+                    }
+                    bos.close();
+                    // 获取下一个文件
                 }
-                bos.close();
-                // 获取下一个文件
                 entry = zipInput.getNextEntry();
             }
             zipInput.close();
