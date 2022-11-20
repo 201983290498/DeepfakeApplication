@@ -3,7 +3,8 @@
     <ServiceTitle :titleHeader="title"></ServiceTitle>
     <ServiceModule2 @parentFunc='switchType'></ServiceModule2>
     <ServiceDisplay :disImgs='disImgs' :detectType="detectType" @uploadImage="uploadImage" ref="serviceDisplay"></ServiceDisplay>
-    <ServiceUpload :detectType="detectType" @uploadImage='uploadImage' @changeDisBoard="changeDisBoard"
+    <ServiceUpload :detectType="detectType" @uploadImage='uploadImage' @changeDisBoard="changeDisBoard" :downToZero="downToZero"
+                   :uploaded="uploaded"
                    @uploadZip="uploadZip"
                    ref="serviceUpload"></ServiceUpload>
   </div>
@@ -27,9 +28,10 @@ export default {
   data () {
     return {
       title: '普通篡改检测',
-      deepfakeDetector: window.server.NORMAL,
+      normalDetector: window.server.NORMAL,
       disImgs: [require('../../static/imgs/copymove1.jpg'), require('../../static/imgs/copymove2.jpg'), require('../../static/imgs/copymove3.jpg')],
-      detectType: 'copymove'
+      detectType: 'copymove',
+      uploaded: 0
     }
   },
   methods: {
@@ -54,7 +56,7 @@ export default {
       // todo 学习 element-ui中确认消息框的使用， jquery需要引入脚本jq-confirm.js
       $.ajax({
         type: 'post',
-        url: _this.deepfakeDetector.detectUrl,
+        url: _this.normalDetector.detectUrl,
         dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify(imgs),
@@ -78,7 +80,7 @@ export default {
       const _this = this
       $.ajax({
         type: 'post',
-        url: _this.deepfakeDetector.detectUrl,
+        url: _this.normalDetector.detectUrl,
         dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify(zipFile),
@@ -90,18 +92,21 @@ export default {
           }
         },
         xhr: function () { // 显示加载进度
-          const xhr = new window.XMLHttpRequest()
+          const xhr = $.ajaxSettings.xhr()
           // todo 学习 使用XMLHttpRequest.upload监听上传过程，注册progress事件，打印回调函数中的event事件
-          xhr.upload.addEventListener('progress', function (event) {
-            // todo 待更新 需要查看更新的内容
-            if (event.lengthComputable) {
-              const percentComplete = event.loaded / event.total
-              _this.uploaded = parseInt(String(percentComplete * 100))
-            }
-          }, false)
+          if (xhr.upload) {
+            xhr.upload.addEventListener('progress', function (event) {
+              // 已经上传的进度条
+              _this.uploaded = Math.round(event.loaded / event.total * 100)
+              console.log(this.uploaded)
+            }, false)
+          }
           return xhr
         }
       })
+    },
+    downToZero: function () {
+      this.uploaded = 0
     }
   }
 }

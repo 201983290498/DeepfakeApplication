@@ -18,6 +18,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.List;
 
 /**
@@ -36,19 +39,22 @@ public class NormalDetectionService {
     private HttpUtil httpUtil;
     @Value("${flask.copymove.url}")
     private String copymoveDetectUrl;
+    @Value("${flask.splicing.url}")
+    private String splicingDetectUrl;
 
     public String detectZip(NormalDetectionFile file, HttpServletRequest request) {
         // zipPath 解压文件夹的路径
         String zipPath = ZipUtil.Base64File(file.getBase64(), file.getName(), request);
         // 打包参数
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        zipPath = zipPath.replace("\\", "/");
         params.add("path", zipPath);
         String detectionType = file.getDetectType();
         String url = null;
         if (detectionType.equals("copymove")) {
-            url = detectionType;
+            url = getCopymoveDetectUrl();
         } else if (detectionType.equals("splicing")) {
-
+            url = getSplicingDetectUrl();
         } else if (detectionType.equals("general")) {
 
         }
@@ -56,10 +62,20 @@ public class NormalDetectionService {
         JSONObject jsonObject = httpUtil.sendPost(url, params);
         log.info(jsonObject.toString());
 
-
-        String result_detected_zip_path = (String) jsonObject.get("result");
-        result_detected_zip_path = result_detected_zip_path.replace("/", "\\");
-        return result_detected_zip_path;
+        // 返回存储检测定位图片的文件夹
+        String result_detected_path = (String) jsonObject.get("result");
+        result_detected_path = result_detected_path.replace("/", "\\");
+        // 将该文件夹的压缩路径
+        String result_zip_path = result_detected_path + ".zip";
+        try {
+            FileOutputStream fos1 = null;
+            fos1 = new FileOutputStream(new File(result_zip_path));
+            // 压缩文件夹
+            ZipUtil.folderToZip(result_detected_path, fos1, true);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return result_zip_path;
     }
 
     public String detectImg(NormalDetectionFile file, HttpServletRequest request) {
@@ -75,7 +91,7 @@ public class NormalDetectionService {
         if (detectionType.equals("copymove")) {
             url = getCopymoveDetectUrl();
         } else if (detectionType.equals("splicing")) {
-
+            url = getSplicingDetectUrl();
         } else if (detectionType.equals("general")) {
 
         }
