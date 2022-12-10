@@ -33,7 +33,7 @@ public class HttpUtil {
     private String detectUrl;
 
     /**
-     * 发送Post请求 todo 学习利用java发送http请求 RestTemplate的基本使用 https://blog.csdn.net/weixin_50637551/article/details/120804096?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-120804096-blog-126702772.pc_relevant_layerdownloadsortv1&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-120804096-blog-126702772.pc_relevant_layerdownloadsortv1&utm_relevant_index=1
+     * 发送Post请求
      * @param url 发送的url请求, 如果是null,则使用默认的url
      * @param params 请求参数
      * @return 返回POST请求的JSON结果
@@ -53,7 +53,6 @@ public class HttpUtil {
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
         // 执行Http请求，将返回的结构使用JSONObject类格式化
         ResponseEntity<String> result = client.exchange(url, method, requestEntity, String.class);
-        // todo 带查看 观察返回值的类型
         return JSONObject.parseObject(result.getBody());
     }
 

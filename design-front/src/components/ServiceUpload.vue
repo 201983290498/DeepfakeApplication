@@ -54,7 +54,6 @@ export default {
     detectType: [String]
   },
   methods: {
-    // todo 不能随便使用匿名函数的形式，因为可能会无法访问vue变量，因此
     openWindow: function () {
       document.getElementById('importFile').click()
     },
@@ -74,7 +73,6 @@ export default {
     getBase64: function (file, isFinal) { // 获取文件字符串并获取文件对象
       const fileReader = new FileReader()
       const _this = this
-      // todo 对象的构建 https://blog.csdn.net/LinDadaxia/article/details/107388546
       _this.uploadImages.name = file.name
       _this.uploadImages.size = file.size
       _this.uploadImages.type = file.type
@@ -88,8 +86,6 @@ export default {
           _this.downToZero()
         }
         if (isFinal) {
-          // todo js字符串格式化输出 https://blog.csdn.net/abraham_ly/article/details/111150401?ops_request_misc=&request_id=&biz_id=102&utm_term=js%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-111150401.nonecase&spm=1018.2226.3001.4187
-          // todo 格式化输出数字 https://blog.csdn.net/weixin_30258621/article/details/112933672?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522166744417916782390552245%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=166744417916782390552245&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-2-112933672-null-null.142^v62^pc_search_tree,201^v3^control_2,213^v1^control&utm_term=js%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA%E6%9C%89%E6%95%88%E6%95%B0%E5%AD%97&spm=1018.2226.3001.4187
           _this.$message.success(`成功选中${_this.uploadImages.name}。\n总大小为: ${Number(_this.uploadImages.size / 1024.0).toFixed(2)}kb;`)
         }
       }
@@ -132,7 +128,6 @@ export default {
           _this.uploadZip = false
         }
         if (_this.check_suffix(files[0].name) !== 0) {
-          // todo 文件需要先加载，加载完成之后才能触发事件，这是一个异步函数 https://blog.csdn.net/lyx32609/article/details/112601241
           _this.getBase64(files[0], true)
         } else {
           _this.$message.warning('仅支持图片或者.zip结尾的压缩文件夹')

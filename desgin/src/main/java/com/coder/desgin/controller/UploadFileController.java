@@ -32,9 +32,7 @@ public class UploadFileController {
     private NormalDetectionService normalDetectionService;
 
     /**
-     * todo 学习 @RequestBody和@RequestParam的区别 https://blog.csdn.net/qq_41456651/article/details/108369053
-     *
-     * @param file    上传的文件
+     * @param file 上传的文件
      * @param request 自动注入request请求
      * @return 返回检测结果，或者显示检测结果的保存地址
      */

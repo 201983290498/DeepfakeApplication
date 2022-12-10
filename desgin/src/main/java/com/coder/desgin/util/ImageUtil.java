@@ -30,7 +30,7 @@ public class ImageUtil {
      */
     public static String generateImage(String filename, String file, HttpServletRequest request) {
         try {
-            // 获取项目的绝对路径 todo 获取 tomcat的路径，需要输出检查  结果如下：C:\Users\coder\AppData\Local\Temp\tomcat-docbase.8088.4091451682675346135\
+            // 获取项目的绝对路径
             String savePath = request.getSession().getServletContext().getRealPath("/");
             File dir = new File(savePath + detectDir + UUID.randomUUID().toString().substring(0, 6));
             // 查看检测文件夹/context/detectFile是否存在

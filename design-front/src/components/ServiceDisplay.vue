@@ -1,9 +1,8 @@
 <template>
   <div class="service-display">
     <div class="display-main inb" id="mainBox">
-      <img :src="disImgs[0]"/>
+      <img />
       <div class="dsno">
-        <!--todo 待学习,学习背景图片的移动-->
         <div class="scan" style="width:100%;height:100%;"></div>
       </div>
     </div>
@@ -57,18 +56,16 @@ export default {
       _this.activeBox = activeBox
       _this.getBase64($('#' + _this.activeBox + ' img').attr('src'))
     },
-    getBase64 (imgUrl) { // todo 根据图片本地的url获取base64字符串 主要用于main-box的图像获取，效率较低
+    getBase64 (imgUrl) {
       const _this = this
       const image = new Image()
       image.crossOrigin = ''
       image.src = imgUrl
-      // todo 待学习知识点 Deffered相关的用法 https://blog.csdn.net/qq_38888512/article/details/105478986
       const deffered = $.Deferred()
       if (imgUrl) {
         image.onload = function () {
           const data = _this.getBase64Image(image)
           $('#mainBox img').attr('src', data)
-          // todo 待更新，需要添加扫描的特效 和传递给父亲元素效果
           _this.upload(data, imgUrl)
           deffered.resolve(data)
         }
@@ -80,8 +77,8 @@ export default {
       canvas.width = img.width
       canvas.height = img.height
       const ctx = canvas.getContext('2d')
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height)
-      return canvas.toDataURL('image/jpeg', 1)
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+      return canvas.toDataURL()
     },
     upload (imgBase64, imgUrl) {
       const img = {}

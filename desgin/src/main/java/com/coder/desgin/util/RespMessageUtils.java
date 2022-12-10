@@ -124,7 +124,6 @@ public class RespMessageUtils {
      * @param args the args
      */
     public static void generateErrorInfo(ModelMap map, String[] args){
-        // TODO errors待定义为一个固定的常量
         Object error = map.getAttribute("errors");
         List<String> errors  = new LinkedList<>();
         if(error == null) {
@@ -134,12 +133,11 @@ public class RespMessageUtils {
             errors.add("用户名和密码错误");
         }
         //响应的信息，应该是放到response响应体的话可以在前端直接获取到
-        // TODO errors待定义为一个固定的常量
+
         map.addAttribute("errors",errors);
     }
 
     public static RespMessageUtils generateErrorInfoOBJ(ModelMap map, String[] args){
-        // TODO errors待定义为一个固定的常量
         Object error = map.getAttribute("errors");
         List<String> errors  = new LinkedList<>();
         if(error == null) {
@@ -149,7 +147,6 @@ public class RespMessageUtils {
             errors.add("用户名和密码错误");
         }
         //响应的信息，应该是放到response响应体的话可以在前端直接获取到
-        // TODO errors待定义为一个固定的常量
         map.addAttribute("errors",errors);
         return new RespMessageUtils(false,map);
     }

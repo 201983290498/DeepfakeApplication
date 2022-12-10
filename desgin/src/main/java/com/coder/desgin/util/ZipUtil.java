@@ -14,8 +14,6 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 /**
- * todo 需要在项目创建对应的文件夹。
- *
  * @Author coder
  * @Date 2022/11/2 21:53
  * @Description 压缩文件上传，解压
@@ -76,9 +74,8 @@ public class ZipUtil {
             ZipInputStream zipInput = new ZipInputStream(byteArray);
             ZipEntry entry = zipInput.getNextEntry();
             File fout = null;
-            while (entry != null) {
-                if (!entry.isDirectory()) {
-                    // todo 这边需要断点，查看这边函数的具体意义, Zip可以发现文件夹下的文件，一般用户可能直接对文件夹压缩，导致解压第一个文件不是图片，所以需要将文件夹的前缀删除
+            while(entry != null ){
+                if (!entry.isDirectory()){
                     log.info("文件名称： [{}]", entry.getName());
                     String fileName = entry.getName();
                     if (fileName.lastIndexOf("/") != -1) {

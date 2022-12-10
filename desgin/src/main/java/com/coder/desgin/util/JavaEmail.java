@@ -106,7 +106,6 @@ public class JavaEmail {
     }
 
     /**
-     * todo 掌握javax.mail发送邮件和springboot-mail的区别。
      * 以html文本作为邮件内容发送给用户
      * @param receiveEmail
      * @param html
@@ -147,7 +146,7 @@ public class JavaEmail {
     }
 
     /**
-     * todo 使用单纯的javax发送邮件(带附件)。
+     * 使用单纯的javax发送邮件(带附件)。
      */
     private Boolean sendMessageWithFile(String receiveEmail, String file) throws MessagingException, UnsupportedEncodingException {
         Properties prop = new Properties();
@@ -167,8 +166,10 @@ public class JavaEmail {
         // 设置发送时间
         message.setSentDate(new Date());
 
-        // todo 发送纯文本 message.setText("DeepFakeApplicaiton已经检测完成, 检测文本以发送在附件中");
-        // todo 发送html邮件，样式丰富。message.setContent("232323232323", "text/html;charset=gbk");
+        // 发送纯文本
+        // message.setText("DeepFakeApplicaiton已经检测完成, 检测文本以发送在附件中");
+        // 发送html邮件，样式丰富。
+        // message.setContent("232323232323", "text/html;charset=gbk");
 
         Multipart multipart = new MimeMultipart();
         BodyPart contentPart = new MimeBodyPart();
@@ -182,7 +183,7 @@ public class JavaEmail {
         // 添加标题通过下面的Base64编码的转换可以保证你的中文附件标题名在发送时不会变成乱码
         messageBodyPart.setFileName(MimeUtility.encodeText(dataSource.getName()));
         multipart.addBodyPart(messageBodyPart);
-        // todo 发送带附件
+        // 发送带附件
         message.setContent(multipart);
         message.saveChanges();// 存储邮件信息
 
@@ -219,7 +220,6 @@ public class JavaEmail {
      * @return 返回生成码页面
      */
     private String generationValidationHtml(String receiveEmail, String validationCode){
-        // todo 记住时间的格式化方式
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm::ss");
 
         return  "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body>"

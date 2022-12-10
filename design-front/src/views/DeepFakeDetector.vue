@@ -35,11 +35,9 @@ export default {
     uploadImage: function (imgs) { // 上传文件返回结果
       const _this = this
       _this.$refs.serviceDisplay.disBoardMask(true) // 给主显示框加上扫描效果
-      // todo 待学习, 学习Image的使用 https://www.cnblogs.com/tianma3798/p/13508786.html
       const image = new Image()
       image.src = imgs.base64
       image.crossOrigin = ''
-      // todo 学习 element-ui中确认消息框的使用， jquery需要引入脚本jq-confirm.js
       $.ajax({
         type: 'post',
         url: _this.deepfakeDetector.detectUrl,
@@ -50,7 +48,6 @@ export default {
           if (response.result) {
             // 通过base64字符串加载图片
             imgs.base64 = _this.drawDetections(image, response.data.rects)
-            // todo 待学习 父组件调用子组件的函数 https://www.cnblogs.com/effortandluck/p/16355992.html
             _this.$refs.serviceDisplay.updateDetectedImage(imgs)
           } else {
             // 显示错误信息
@@ -60,7 +57,6 @@ export default {
       })
     },
     drawDetections: function (img, detections) { // 绘制矩形框
-      // todo 待学习 canvas https://www.w3school.com.cn/tags/html_ref_canvas.asp
       const canvas = document.createElement('canvas')
       canvas.width = img.width
       canvas.height = img.height
@@ -74,7 +70,6 @@ export default {
           ctx.strokeStyle = 'green' // 边框颜色
         }
         ctx.lineWidth = 2 // 线条宽度
-        // todo 待学习 图片画矩形框 https://www.w3school.com.cn/tags/canvas_strokerect.asp
         ctx.strokeRect(detection.x1, detection.y1, detection.x2 - detection.x1, detection.y2 - detection.y1)
         const txt = '[ ' + detection.type + ', ' + detection.confidence + ' ]'
         ctx.lineWidth = 1 // 线条宽度
@@ -102,7 +97,6 @@ export default {
         },
         xhr: function () { // 显示加载进度
           const xhr = $.ajaxSettings.xhr()
-          // todo 学习 使用XMLHttpRequest.upload监听上传过程，注册progress事件，打印回调函数中的event事件
           if (xhr.upload) {
             xhr.upload.addEventListener('progress', function (event) {
               // 已经上传的进度条

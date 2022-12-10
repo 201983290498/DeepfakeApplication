@@ -7,3 +7,9 @@ logging:
   file:
     path: E:\\code\\github\\desgin\\mylog
     name: E:\\code\\github\\desgin\\mylog\\design.log
+
+spring:
+  mail:
+    host: smtp.qq.com
+    username: 1023668958@qq.com
+    password: flujtaexoaulbbda

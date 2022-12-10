@@ -29,7 +29,6 @@
         </div>
       </div>
     </nav>
-<!--todo 需要修改margin为原来的1半-->
     <router-view style="margin-top: 70px; text-align: center" class="content-mg content-pd"></router-view>
     <div class="page-bottom"></div>
   </div>

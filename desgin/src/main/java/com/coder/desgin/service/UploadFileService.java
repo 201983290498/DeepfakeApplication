@@ -106,7 +106,7 @@ public class UploadFileService {
     }
 
     /**
-     * todo 目前只实现检测结果的文本 将检测结果转换成检测文件 or 返回图片的存储位置
+     * todo 目前只实现检测结果的文本 将检测结果转换成检测文件 or 返回图片的存储位置,需要返回注册邮箱。
      * @param imgs image的检测结果
      * @return
      */
